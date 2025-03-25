@@ -69,8 +69,6 @@
 </template>
 <script>
 import {listNotice, getNotice} from "@/api/system/notice";
-import request from '@/utils/request';
-import {getVenueCourtCountMap} from "@/api/featherball/court";
 import * as echarts from 'echarts'
 import {getTopUsersByPoemCount} from "@/api/poem/poem";
 
@@ -195,7 +193,7 @@ export default {
               left: 'center',
               top: 'center',
               style: {
-                text: '古诗词交流平台',
+                text: '珠海智慧养老系统',
                 fontSize: 80,
                 fontWeight: 'bold',
                 lineDash: [0, 200],
