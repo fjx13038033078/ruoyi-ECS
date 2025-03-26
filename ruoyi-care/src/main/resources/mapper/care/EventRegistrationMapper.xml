@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.care.mapper.EventRegistrationMapper">
+
+    <!-- 定义结果映射 -->
+    <resultMap id="ActivityRegistrationResult" type="com.ruoyi.care.domain.EventRegistration">
+        <id property="registrationId" column="registration_id"/>
+        <result property="elderlyId" column="elderly_id"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="registrationTime" column="registration_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <!-- 查询所有活动报名 -->
+    <select id="getAllRegistrations" resultMap="ActivityRegistrationResult">
+        SELECT * FROM ecs_activity_registration
+    </select>
+
+    <!-- 根据报名ID查询活动报名 -->
+    <select id="getRegistrationById" parameterType="Long" resultMap="ActivityRegistrationResult">
+        SELECT * FROM ecs_activity_registration WHERE registration_id = #{registrationId}
+    </select>
+
+    <!-- 根据老年人ID查询其所有活动报名 -->
+    <select id="getRegistrationsByElderlyId" parameterType="Long" resultMap="ActivityRegistrationResult">
+        SELECT * FROM ecs_activity_registration WHERE elderly_id = #{elderlyId}
+    </select>
+
+    <!-- 添加活动报名 -->
+    <insert id="addRegistration" parameterType="com.ruoyi.care.domain.EventRegistration">
+        INSERT INTO ecs_activity_registration (elderly_id, activity_id, registration_time, status)
+        VALUES (#{elderlyId}, #{activityId}, #{registrationTime}, #{status})
+    </insert>
+
+    <!-- 更新活动报名 -->
+    <update id="updateRegistration" parameterType="com.ruoyi.care.domain.EventRegistration">
+        UPDATE ecs_activity_registration
+        SET elderly_id = #{elderlyId},
+            activity_id = #{activityId},
+            registration_time = #{registrationTime},
+            status = #{status}
+        WHERE registration_id = #{registrationId}
+    </update>
+
+    <!-- 删除活动报名 -->
+    <delete id="deleteRegistration" parameterType="Long">
+        DELETE FROM ecs_activity_registration WHERE registration_id = #{registrationId}
+    </delete>
+
+</mapper>

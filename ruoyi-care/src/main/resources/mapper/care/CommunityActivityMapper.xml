@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.care.mapper.CommunityActivityMapper">
+
+    <!-- 定义结果映射 -->
+    <resultMap id="CommunityActivityResult" type="com.ruoyi.care.domain.CommunityActivity">
+        <id property="activityId" column="activity_id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="activityTime" column="activity_time"/>
+        <result property="location" column="location"/>
+        <result property="maxParticipants" column="max_participants"/>
+    </resultMap>
+
+    <!-- 查询所有社区活动 -->
+    <select id="getAllCommunityActivities" resultMap="CommunityActivityResult">
+        SELECT * FROM ecs_community_activity
+    </select>
+
+    <!-- 根据ID查询社区活动 -->
+    <select id="getCommunityActivityById" parameterType="Long" resultMap="CommunityActivityResult">
+        SELECT * FROM ecs_community_activity WHERE activity_id = #{activityId}
+    </select>
+
+    <!-- 添加社区活动 -->
+    <insert id="addCommunityActivity" parameterType="com.ruoyi.care.domain.CommunityActivity">
+        INSERT INTO ecs_community_activity (title, description, activity_time, location, max_participants)
+        VALUES (#{title}, #{description}, #{activityTime}, #{location}, #{maxParticipants})
+    </insert>
+
+    <!-- 更新社区活动 -->
+    <update id="updateCommunityActivity" parameterType="com.ruoyi.care.domain.CommunityActivity">
+        UPDATE ecs_community_activity
+        SET title = #{title},
+            description = #{description},
+            activity_time = #{activityTime},
+            location = #{location},
+            max_participants = #{maxParticipants}
+        WHERE activity_id = #{activityId}
+    </update>
+
+    <!-- 删除社区活动 -->
+    <delete id="deleteCommunityActivity" parameterType="Long">
+        DELETE FROM ecs_community_activity WHERE activity_id = #{activityId}
+    </delete>
+</mapper>

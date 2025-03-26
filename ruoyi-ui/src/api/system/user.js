@@ -11,7 +11,7 @@ export function listUser(query) {
 }
 
 // 查询用户列表
-export function listTrainer(query) {
+export function listElderly(query) {
   return request({
     url: '/system/user/trainerList',
     method: 'get',

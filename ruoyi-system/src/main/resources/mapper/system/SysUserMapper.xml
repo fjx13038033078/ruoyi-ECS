@@ -114,7 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
 		</if>
 		<!-- 添加筛选条件：role_id为2 -->
-		AND r.role_id = 2
+		AND r.role_id = 101
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
 	</select>
@@ -147,7 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
 		</if>
 		<!-- 添加筛选条件：role_id为3 -->
-		AND r.role_id = 100
+		AND r.role_id = 101
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
 	</select>

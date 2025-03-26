@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.care.mapper.HealthRecordMapper">
+
+    <!-- 定义结果映射 -->
+    <resultMap id="HealthRecordResult" type="com.ruoyi.care.domain.HealthRecord">
+        <id property="recordId" column="record_id"/>
+        <result property="elderlyId" column="elderly_id"/>
+        <result property="recordDate" column="record_date"/>
+        <result property="bloodPressure" column="blood_pressure"/>
+        <result property="bloodSugar" column="blood_sugar"/>
+        <result property="temperature" column="temperature"/>
+        <result property="remarks" column="remarks"/>
+        <result property="fileName" column="file_name"/>
+    </resultMap>
+
+    <!-- 查询所有健康记录 -->
+    <select id="getAllHealthRecords" resultMap="HealthRecordResult">
+        SELECT * FROM ecs_health_record
+    </select>
+
+    <!-- 根据ID查询健康记录 -->
+    <select id="getHealthRecordById" parameterType="Long" resultMap="HealthRecordResult">
+        SELECT * FROM ecs_health_record WHERE record_id = #{recordId}
+    </select>
+
+    <select id="getHealthRecordByElderlyId" parameterType="Long" resultMap="HealthRecordResult">
+        SELECT * FROM ecs_health_record WHERE elderly_id = #{elderlyId}
+    </select>
+
+    <!-- 添加健康记录 -->
+    <insert id="addHealthRecord" parameterType="com.ruoyi.care.domain.HealthRecord">
+        INSERT INTO ecs_health_record (elderly_id, record_date, blood_pressure, blood_sugar, temperature, remarks, file_name)
+        VALUES (#{elderlyId}, #{recordDate}, #{bloodPressure}, #{bloodSugar}, #{temperature}, #{remarks}, #{fileName})
+    </insert>
+
+    <!-- 更新健康记录 -->
+    <update id="updateHealthRecord" parameterType="com.ruoyi.care.domain.HealthRecord">
+        UPDATE ecs_health_record
+        SET elderly_id = #{elderlyId},
+        record_date = #{recordDate},
+        blood_pressure = #{bloodPressure},
+        blood_sugar = #{bloodSugar},
+        temperature = #{temperature},
+        remarks = #{remarks},
+        file_name = #{fileName}
+        WHERE record_id = #{recordId}
+    </update>
+
+    <!-- 删除健康记录 -->
+    <delete id="deleteHealthRecord" parameterType="Long">
+        DELETE FROM ecs_health_record WHERE record_id = #{recordId}
+    </delete>
+
+</mapper>

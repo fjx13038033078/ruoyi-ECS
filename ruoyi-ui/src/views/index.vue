@@ -26,7 +26,7 @@
         <el-col :span="12">
           <el-card style="margin-right: 20px; height: 420px;">
             <h3 slot="header">通知公告</h3>
-            <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
+            <el-table v-loading="loading" :data="noticeList">
               <el-table-column label="序号" align="center" prop="noticeId" width="100"/>
               <el-table-column
                 label="公告标题"
