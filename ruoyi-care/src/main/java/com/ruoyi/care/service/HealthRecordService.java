@@ -42,4 +42,22 @@ public interface HealthRecordService {
      * @return 是否删除成功
      */
     boolean deleteHealthRecord(Long recordId);
+
+    /**
+     * 获取今日高烧人数
+     * @return 高烧人数
+     */
+    int countHighTemperatureToday();
+
+    /**
+     * 获取今日高血糖人数
+     * @return 高血糖人数
+     */
+    int countHighBloodSugarToday();
+
+    /**
+     * 获取今日低血糖人数
+     * @return 低血糖人数
+     */
+    int countLowBloodSugarToday();
 }

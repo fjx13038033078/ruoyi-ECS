@@ -40,7 +40,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
             fillHealthRecord(allHealthRecords);
             return allHealthRecords;
         } else {
-            List<HealthRecord> healthRecordsByElderlyId = healthRecordMapper.getHealthRecordsByElderlyId(userId);
+            List<HealthRecord> healthRecordsByElderlyId = healthRecordMapper.getHealthRecordByElderlyId(userId);
             fillHealthRecord(healthRecordsByElderlyId);
             return healthRecordsByElderlyId;
         }
@@ -98,6 +98,21 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     public boolean deleteHealthRecord(Long recordId) {
         int rows = healthRecordMapper.deleteHealthRecord(recordId);
         return rows > 0;
+    }
+
+    @Override
+    public int countHighTemperatureToday() {
+        return healthRecordMapper.countHighTemperatureToday();
+    }
+
+    @Override
+    public int countHighBloodSugarToday() {
+        return healthRecordMapper.countHighBloodSugarToday();
+    }
+
+    @Override
+    public int countLowBloodSugarToday() {
+        return healthRecordMapper.countLowBloodSugarToday();
     }
 
     /**

@@ -52,4 +52,28 @@
         DELETE FROM ecs_health_record WHERE record_id = #{recordId}
     </delete>
 
+    <!-- 统计当日体温超过37.3°C的老年人数量 -->
+    <select id="countHighTemperatureToday" resultType="int">
+        SELECT COUNT(DISTINCT elderly_id)
+        FROM ecs_health_record
+        WHERE temperature > 37.3
+          AND DATE(record_date) = CURDATE()
+    </select>
+
+    <!-- 统计当日血糖超过7.8 mmol/L（空腹）的老年人数量 -->
+    <select id="countHighBloodSugarToday" resultType="int">
+        SELECT COUNT(DISTINCT elderly_id)
+        FROM ecs_health_record
+        WHERE blood_sugar > 7.8  -- 这里默认按空腹标准，可扩展为餐后判断
+          AND DATE(record_date) = CURDATE()
+    </select>
+
+    <!-- 统计当日低血糖（血糖 < 3.9 mmol/L）的老年人数量 -->
+    <select id="countLowBloodSugarToday" resultType="int">
+        SELECT COUNT(DISTINCT elderly_id)
+        FROM ecs_health_record
+        WHERE blood_sugar &lt; 3.9
+        AND DATE(record_date) = CURDATE()
+    </select>
+
 </mapper>

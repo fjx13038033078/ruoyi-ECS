@@ -44,3 +44,24 @@ export function deleteHealthRecord(recordId) {
     params: { recordId }
   })
 }
+
+export function countHighTemperatureToday(){
+  return request({
+    url: '/health/record/countHighTemperatureToday',
+    method: 'get'
+  })
+}
+
+export function countHighBloodSugarToday(){
+  return request({
+    url: '/health/record/countHighBloodSugarToday',
+    method: 'get'
+  })
+}
+
+export function countLowBloodSugarToday(){
+  return request({
+    url: '/health/record/countLowBloodSugarToday',
+    method: 'get'
+  })
+}

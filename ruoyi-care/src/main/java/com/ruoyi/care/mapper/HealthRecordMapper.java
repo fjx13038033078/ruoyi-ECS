@@ -29,7 +29,7 @@ public interface HealthRecordMapper {
      * @param elderlyId 老人ID
      * @return 健康记录列表
      */
-    List<HealthRecord> getHealthRecordsByElderlyId(Long elderlyId);
+    List<HealthRecord> getHealthRecordByElderlyId(Long elderlyId);
 
     /**
      * 添加健康记录
@@ -51,4 +51,22 @@ public interface HealthRecordMapper {
      * @return 影响行数
      */
     int deleteHealthRecord(Long recordId);
+
+    /**
+     * 获取今日高烧人数
+     * @return 高烧人数
+     */
+    int countHighTemperatureToday();
+
+    /**
+     * 获取今日高血糖人数
+     * @return 高血糖人数
+     */
+    int countHighBloodSugarToday();
+
+    /**
+     * 获取今日低血糖人数
+     * @return 低血糖人数
+     */
+    int countLowBloodSugarToday();
 }

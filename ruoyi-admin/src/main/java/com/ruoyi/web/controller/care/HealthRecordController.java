@@ -69,4 +69,31 @@ public class HealthRecordController extends BaseController {
     public AjaxResult deleteHealthRecord(@RequestParam Long recordId) {
         return toAjax(healthRecordService.deleteHealthRecord(recordId));
     }
+
+    /**
+     * 获取当日高体温记录数量
+     * @return 高体温记录数量
+     */
+    @GetMapping("/countHighTemperatureToday")
+    public AjaxResult countHighTemperatureToday() {
+        return success(healthRecordService.countHighTemperatureToday());
+    }
+
+    /**
+     * 获取当日高血糖记录数量
+     * @return 高血糖记录数量
+     */
+    @GetMapping("/countHighBloodSugarToday")
+    public AjaxResult countHighBloodSugarToday() {
+        return success(healthRecordService.countHighBloodSugarToday());
+    }
+
+    /**
+     * 获取当日低血糖记录数量
+     * @return 低血糖记录数量
+     */
+    @GetMapping("/countLowBloodSugarToday")
+    public AjaxResult countLowBloodSugarToday() {
+        return success(healthRecordService.countLowBloodSugarToday());
+    }
 }
