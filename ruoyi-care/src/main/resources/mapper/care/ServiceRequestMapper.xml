@@ -18,28 +18,28 @@
 
     <!-- 查询所有服务请求 -->
     <select id="getAllServiceRequests" resultMap="ServiceRequestResult">
-        SELECT * FROM service_request
+        SELECT * FROM ecs_service_request
     </select>
 
     <!-- 根据请求ID查询服务请求 -->
     <select id="getServiceRequestById" parameterType="Long" resultMap="ServiceRequestResult">
-        SELECT * FROM service_request WHERE request_id = #{requestId}
+        SELECT * FROM ecs_service_request WHERE request_id = #{requestId}
     </select>
 
     <!-- 根据老人ID查询服务请求 -->
     <select id="getServiceRequestsByElderlyId" parameterType="Long" resultMap="ServiceRequestResult">
-        SELECT * FROM service_request WHERE elderly_id = #{elderlyId}
+        SELECT * FROM ecs_service_request WHERE elderly_id = #{elderlyId}
     </select>
 
     <!-- 添加服务请求 -->
     <insert id="addServiceRequest" parameterType="com.ruoyi.care.domain.ServiceRequest">
-        INSERT INTO service_request (elderly_id, service_type, request_time, status, service_time, service_personnel, details)
+        INSERT INTO ecs_service_request (elderly_id, service_type, request_time, status, service_time, service_personnel, details)
         VALUES (#{elderlyId}, #{serviceType}, #{requestTime}, #{status}, #{serviceTime}, #{servicePersonnel}, #{details})
     </insert>
 
     <!-- 更新服务请求 -->
     <update id="updateServiceRequest" parameterType="com.ruoyi.care.domain.ServiceRequest">
-        UPDATE service_request
+        UPDATE ecs_service_request
         SET elderly_id = #{elderlyId},
             service_type = #{serviceType},
             request_time = #{requestTime},
@@ -52,19 +52,19 @@
 
     <!-- 删除服务请求 -->
     <delete id="deleteServiceRequest" parameterType="Long">
-        DELETE FROM service_request WHERE request_id = #{requestId}
+        DELETE FROM ecs_service_request WHERE request_id = #{requestId}
     </delete>
 
     <!-- 仅修改申请状态（用于用户取消或管理员审核） -->
     <update id="updateStatus">
-        UPDATE service_request
+        UPDATE ecs_service_request
         SET status = #{status}
         WHERE request_id = #{requestId}
     </update>
 
     <!-- 修改状态、服务时间、服务人员、服务详情（完成服务时填写） -->
     <update id="updateServiceDetails">
-        UPDATE service_request
+        UPDATE ecs_service_request
         SET status = #{status},
             service_time = #{serviceTime},
             service_personnel = #{servicePersonnel},

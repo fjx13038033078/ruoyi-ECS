@@ -4,10 +4,13 @@ import com.ruoyi.care.domain.ServiceRequest;
 import com.ruoyi.care.service.ServiceRequestService;
 import com.ruoyi.care.mapper.ServiceRequestMapper;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.service.ISysRoleService;
+import com.ruoyi.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,14 +20,29 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ServiceRequestServiceImpl implements ServiceRequestService {
+
     private final ServiceRequestMapper serviceRequestMapper;
+
+    private final ISysUserService iSysUserService;
+
+    private final ISysRoleService iSysRoleService;
 
     /**
      * 获取所有服务请求
      */
     @Override
     public List<ServiceRequest> getAllServiceRequests() {
-        return serviceRequestMapper.getAllServiceRequests();
+        Long userId = SecurityUtils.getUserId();
+        String role = iSysRoleService.selectStringRoleByUserId(userId);
+        if (role.equals("admin")) {
+            List<ServiceRequest> allServiceRequests = serviceRequestMapper.getAllServiceRequests();
+            fillUserName(allServiceRequests);
+            return allServiceRequests;
+        } else {
+            List<ServiceRequest> serviceRequestsByElderlyId = serviceRequestMapper.getServiceRequestsByElderlyId(userId);
+            fillUserName(serviceRequestsByElderlyId);
+            return serviceRequestsByElderlyId;
+        }
     }
 
     /**
@@ -77,6 +95,7 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
         Long userId = SecurityUtils.getUserId();
         serviceRequest.setElderlyId(userId);
         serviceRequest.setStatus(0); // 默认状态
+        serviceRequest.setRequestTime(LocalDateTime.now());
         int rows = serviceRequestMapper.addServiceRequest(serviceRequest);
         return rows > 0;
     }
@@ -91,5 +110,16 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
     public boolean updateServiceRequest(ServiceRequest serviceRequest) {
         int rows = serviceRequestMapper.updateServiceRequest(serviceRequest);
         return rows > 0;
+    }
+
+    private void fillUserName(List<ServiceRequest> serviceRequests) {
+        for (ServiceRequest serviceRequest : serviceRequests) {
+            if (serviceRequest == null){
+                continue;
+            }
+            Long elderlyId = serviceRequest.getElderlyId();
+            String userName = iSysUserService.selectUserById(elderlyId).getNickName();
+            serviceRequest.setUserName(userName);
+        }
     }
 }

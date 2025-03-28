@@ -36,6 +36,7 @@ public class HealthRecord implements Serializable {
     /**
      * 关联老年人姓名
      */
+    @TableField(exist = false)
     private String userName;
 
     /**
