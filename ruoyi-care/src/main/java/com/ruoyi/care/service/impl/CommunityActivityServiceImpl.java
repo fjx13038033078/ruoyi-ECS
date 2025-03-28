@@ -46,7 +46,6 @@ public class CommunityActivityServiceImpl implements CommunityActivityService {
     @Override
     @Transactional
     public boolean addCommunityActivity(CommunityActivity communityActivity) {
-//        communityActivity.setOrganizerId(SecurityUtils.getUserId());
         int rows = communityActivityMapper.addCommunityActivity(communityActivity);
         return rows > 0;
     }
@@ -59,10 +58,6 @@ public class CommunityActivityServiceImpl implements CommunityActivityService {
     @Override
     @Transactional
     public boolean updateCommunityActivity(CommunityActivity communityActivity) {
-        Long userId = SecurityUtils.getUserId();
-//        if (!communityActivity.getOrganizerId().equals(userId) && userId != 1) {
-//            throw new RuntimeException("用户仅能修改自己组织的活动");
-//        }
         int rows = communityActivityMapper.updateCommunityActivity(communityActivity);
         return rows > 0;
     }
@@ -75,11 +70,6 @@ public class CommunityActivityServiceImpl implements CommunityActivityService {
     @Override
     @Transactional
     public boolean deleteCommunityActivity(Long activityId) {
-        CommunityActivity activity = communityActivityMapper.getCommunityActivityById(activityId);
-        Long userId = SecurityUtils.getUserId();
-//        if (!activity.getOrganizerId().equals(userId) && userId != 1) {
-//            throw new RuntimeException("用户仅能删除自己组织的活动");
-//        }
         int rows = communityActivityMapper.deleteCommunityActivity(activityId);
         return rows > 0;
     }

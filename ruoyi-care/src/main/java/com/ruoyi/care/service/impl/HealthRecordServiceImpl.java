@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.ruoyi.common.utils.PageUtils.startPage;
+
 /**
  * @Author 范佳兴
  * @date 2025/3/25 17:18
@@ -36,10 +38,12 @@ public class HealthRecordServiceImpl implements HealthRecordService {
         Long userId = SecurityUtils.getUserId();
         String role = iSysRoleService.selectStringRoleByUserId(userId);
         if (role.equals("admin")){
+            startPage();
             List<HealthRecord> allHealthRecords = healthRecordMapper.getAllHealthRecords();
             fillHealthRecord(allHealthRecords);
             return allHealthRecords;
         } else {
+            startPage();
             List<HealthRecord> healthRecordsByElderlyId = healthRecordMapper.getHealthRecordByElderlyId(userId);
             fillHealthRecord(healthRecordsByElderlyId);
             return healthRecordsByElderlyId;
