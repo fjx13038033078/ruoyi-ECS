@@ -320,9 +320,9 @@ export default {
         <template slot-scope="scope">
           <el-button size="mini" @click="handleView(scope.row)" v-hasPermi="['care:serviceRequest:detail']">查看</el-button>
           <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['care:serviceRequest:edit']" v-if="scope.row.status === 0">编辑</el-button>
-          <el-button type="warning" size="mini" @click="handleAudit(scope.row)" v-hasPermi="['care:serviceRequest:audit']" v-if="isAdmin && scope.row.status === 0">审核</el-button>
-          <el-button type="success" size="mini" @click="handleComplete(scope.row)" v-hasPermi="['care:serviceRequest:finish']" v-if="isAdmin && scope.row.status === 1">服务完成</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row.requestId)" v-hasPermi="['care:serviceRequest:delete']">删除</el-button>
+          <el-button type="warning" size="mini" @click="handleAudit(scope.row)" v-hasPermi="['care:serviceRequest:audit']" v-if="scope.row.status === 0">审核</el-button>
+          <el-button type="success" size="mini" @click="handleComplete(scope.row)" v-hasPermi="['care:serviceRequest:finish']" v-if="scope.row.status === 1">服务完成</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.requestId)" v-hasPermi="['care:serviceRequest:delete']" v-if="scope.row.status === 0">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

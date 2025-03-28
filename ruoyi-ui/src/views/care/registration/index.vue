@@ -81,17 +81,17 @@ export default {
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" fixed="right">
         <template slot-scope="scope">
-          <el-button 
-            size="mini" 
-            type="warning" 
-            @click="handleCancel(scope.row)" 
+          <el-button
+            size="mini"
+            type="warning"
+            @click="handleCancel(scope.row)"
             v-if="scope.row.status === 1"
-            v-hasPermi="['care:registration:edit']"
-          >取消预约</el-button>
-          <el-button 
-            size="mini" 
-            type="danger" 
-            @click="handleDelete(scope.row.registrationId)" 
+            v-hasPermi="['care:registration:cancel']"
+          >取消报名</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.row.registrationId)"
             v-hasPermi="['care:registration:delete']"
           >删除记录</el-button>
         </template>
