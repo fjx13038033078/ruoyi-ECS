@@ -1,5 +1,6 @@
 package com.ruoyi.care.service.impl;
 
+import com.ruoyi.care.domain.CommunityActivity;
 import com.ruoyi.care.domain.Registration;
 import com.ruoyi.care.mapper.RegistrationMapper;
 import com.ruoyi.care.service.RegistrationService;
@@ -7,11 +8,13 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 import static com.ruoyi.common.utils.PageUtils.startPage;
 
@@ -23,6 +26,7 @@ import static com.ruoyi.common.utils.PageUtils.startPage;
 @RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
 
+    private static final Logger log = LoggerFactory.getLogger(RegistrationServiceImpl.class);
     private final RegistrationMapper registrationMapper;
 
     private final CommunityActivityServiceImpl communityActivityService;
@@ -104,6 +108,28 @@ public class RegistrationServiceImpl implements RegistrationService {
         return registrationMapper.getRegistrationsByUserId(elderlyId);
     }
 
+    @Override
+    public List<Map<String, Integer>> getTop5ActivitiesByRegistrations() {
+        // 获取报名人数最多的前 5 个活动的 activity_id
+        List<Long> top5ActivityIds = registrationMapper.getTop5ActivitiesByRegistrations();
+
+        // 最终返回的结果
+        List<Map<String, Integer>> result = new ArrayList<>();
+
+        // 遍历获取每个活动的标题，并转换为 Map
+        for (Long activityId : top5ActivityIds) {
+            String activityTitle = communityActivityService.getCommunityActivityById(activityId).getTitle();
+            int registrationCount = registrationMapper.getRegistrationCountByActivityId(activityId);
+
+            // 创建 Map 并添加到结果列表
+            Map<String, Integer> activityMap = new HashMap<>();
+            activityMap.put(activityTitle, registrationCount);
+            result.add(activityMap);
+        }
+
+        return result;
+    }
+
     private void fillRegistration(List<Registration> registrations) {
         for (Registration registration : registrations) {
             Long userId = registration.getElderlyId();
@@ -129,7 +155,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         // 校验是否已预约
         if (existingRegistration != null && existingRegistration.getStatus() != 0) {
-            throw new RuntimeException("您已预约该活动，不能重复预约！");
+            throw new RuntimeException("您已报名该活动，不能重复报名！");
         }
 
         // 统计有效预约数量
@@ -139,7 +165,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .filter(r -> r.getStatus() == 1)
                 .count();
         if (activeCount >= 3) {
-            throw new RuntimeException("您已预约3个活动，不能再预约！");
+            throw new RuntimeException("您已报名3个活动，不能再报名！");
         }
     }
 }

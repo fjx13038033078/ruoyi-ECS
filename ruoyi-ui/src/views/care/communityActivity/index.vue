@@ -110,9 +110,9 @@ export default {
         this.viewDialogVisible = true
       })
     },
-    // 预约活动
+    // 报名活动
     handleRegister(row) {
-      this.$confirm('确定要预约参加该活动吗？', '预约确认', {
+      this.$confirm('确定要报名参加该活动吗？', '报名确认', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'info'
@@ -122,7 +122,7 @@ export default {
         }
         return addRegistration(data)
       }).then(() => {
-        this.$message.success('预约成功')
+        this.$message.success('报名成功')
       }).catch(() => {
         // 用户取消操作，不做处理
       })
@@ -168,7 +168,7 @@ export default {
         <template slot-scope="scope">
           <el-button size="mini" @click="handleView(scope.row)" v-hasPermi="['care:communityActivity:detail']">查看</el-button>
           <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['care:communityActivity:edit']">编辑</el-button>
-          <el-button type="success" size="mini" @click="handleRegister(scope.row)" v-hasPermi="['care:registration:add']">预约</el-button>
+          <el-button type="success" size="mini" @click="handleRegister(scope.row)" v-hasPermi="['care:registration:add']">报名</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row.activityId)" v-hasPermi="['care:communityActivity:delete']">删除</el-button>
         </template>
       </el-table-column>

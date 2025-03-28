@@ -1,10 +1,12 @@
 package com.ruoyi.care.mapper;
 
 import com.ruoyi.care.domain.Registration;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author 范佳兴
@@ -30,7 +32,7 @@ public interface RegistrationMapper {
     int checkUserRegistration(@Param("activityId") Long activityId, @Param("elderlyId") Long elderlyId);
 
     Registration getRegistrationByActivityAndUser(@Param("activityId") Long activityId,
-                                                          @Param("elderlyId") Long elderlyId);
+                                                  @Param("elderlyId") Long elderlyId);
 
     /**
      * 添加活动报名信息
@@ -71,4 +73,9 @@ public interface RegistrationMapper {
      * @return 活动报名信息
      */
     List<Registration> getRegistrationsByUserId(Long elderlyId);
+
+
+    List<Long> getTop5ActivitiesByRegistrations();
+
+    int getRegistrationCountByActivityId(@Param("activityId") Long activityId);
 }

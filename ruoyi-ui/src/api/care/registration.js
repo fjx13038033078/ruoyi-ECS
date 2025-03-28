@@ -62,3 +62,11 @@ export function listByUserId(userId) {
     params: { userId }
   })
 }
+
+// 获取报名最多的5个活动
+export function getTop5ActivitiesByRegistrations() {
+  return request({
+    url: '/care/registration/top5Activities',
+    method: 'get'
+  })
+}

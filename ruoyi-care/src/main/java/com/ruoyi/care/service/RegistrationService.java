@@ -3,6 +3,7 @@ package com.ruoyi.care.service;
 import com.ruoyi.care.domain.Registration;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author 范佳兴
@@ -65,4 +66,6 @@ public interface RegistrationService {
      * @return 报名信息列表
      */
     List<Registration> getRegistrationsByUserId(Long elderlyId);
+
+    List<Map<String, Integer>> getTop5ActivitiesByRegistrations();
 }

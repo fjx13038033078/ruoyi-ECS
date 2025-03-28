@@ -64,4 +64,18 @@
         DELETE FROM ecs_registration WHERE registration_id = #{registrationId}
     </delete>
 
+    <select id="getTop5ActivitiesByRegistrations" resultType="java.lang.Long">
+        SELECT activity_id
+        FROM ecs_registration
+        WHERE status = 1
+        GROUP BY activity_id
+        ORDER BY COUNT(*) DESC
+            LIMIT 5
+    </select>
+
+    <select id="getRegistrationCountByActivityId" resultType="int">
+        SELECT COUNT(*) FROM ecs_registration
+        WHERE activity_id = #{activityId} AND status = 1
+    </select>
+
 </mapper>

@@ -98,4 +98,9 @@ public class RegistrationController extends BaseController {
         List<Registration> registrations = registrationService.getRegistrationsByUserId(userId);
         return getDataTable(registrations);
     }
+
+    @GetMapping("/top5Activities")
+    public AjaxResult getTop5ActivitiesByRegistrations() {
+        return success(registrationService.getTop5ActivitiesByRegistrations());
+    }
 }

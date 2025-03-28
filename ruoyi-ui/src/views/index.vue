@@ -51,11 +51,10 @@
             </el-table>
           </el-card>
         </el-col>
-        <!-- 场馆场地数量 -->
         <el-col :span="12">
           <el-card style="margin-right: 20px; height: 420px;">
-            <h3 slot="header">古诗词发布排行榜</h3>
-              <div id="poemCourtChart" style="height: 300px;"></div> <!-- echarts 柱状图 -->
+            <h3 slot="header">热门活动报名排行榜</h3>
+              <div id="hotActivitiesChart" style="height: 300px;"></div> <!-- echarts 柱状图 -->
           </el-card>
         </el-col>
       </el-row>
@@ -70,7 +69,7 @@
 <script>
 import {listNotice, getNotice} from "@/api/system/notice";
 import * as echarts from 'echarts'
-import {getTopUsersByPoemCount} from "@/api/poem/poem";
+import {getTop5ActivitiesByRegistrations} from "@/api/care/registration";
 
 
 export default {
@@ -96,7 +95,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      venueCourtMapData: {}, // 存储场馆场地数量映射的数据
+      hotActivitiesData: [], // 存储热门活动数据
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -127,7 +126,7 @@ export default {
     this.getList();
   },
   mounted() {
-    this.initPoemCourtChart(); // 初始化 echarts 柱状图
+    this.initHotActivitiesChart(); // 初始化热门活动图表
     this.initEchartsText(); // 初始化 ECharts 动画文本
   },
   methods: {
@@ -149,37 +148,70 @@ export default {
         this.loading = false;
       });
     },
-    // 获取场馆场地数量映射的数据并更新到图表中
-    fetchPoemCourtMapData() {
-      getTopUsersByPoemCount().then(response => {
-        this.topUserMapData = response.data;
-        this.updateTopUserChart();
+    // 获取热门活动数据并更新到图表中
+    fetchHotActivitiesData() {
+      getTop5ActivitiesByRegistrations().then(response => {
+        this.hotActivitiesData = response.data;
+        this.updateHotActivitiesChart();
       })
     },
-    // 初始化 echarts 柱状图
-    initPoemCourtChart() {
-      this.poemCourtChart = echarts.init(document.getElementById("poemCourtChart"));
-      this.fetchPoemCourtMapData(); // 获取数据并更新图表
+    // 初始化热门活动图表
+    initHotActivitiesChart() {
+      this.hotActivitiesChart = echarts.init(document.getElementById("hotActivitiesChart"));
+      this.fetchHotActivitiesData(); // 获取数据并更新图表
     },
-    updateTopUserChart(){
-      // 使用获取到的数据更新图表
-      const userNames = Object.keys(this.topUserMapData);
-      const countPoems = Object.values(this.topUserMapData);
+    updateHotActivitiesChart() {
+      // 准备数据
+      const activityNames = [];
+      const registrationCounts = [];
+      
+      // 解析返回的数据 - 修改为适应新的数据格式
+      this.hotActivitiesData.forEach(item => {
+        // 数据格式是 {"活动名称": 数量}
+        const activityName = Object.keys(item)[0]; // 获取第一个键作为活动名称
+        const count = item[activityName];          // 获取对应的值作为报名人数
+        
+        activityNames.push(activityName);
+        registrationCounts.push(count);
+      });
+      
       const option = {
-        // echarts 配置项
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
         xAxis: {
-          type: "category",
-          data: userNames
+          type: 'category',
+          data: activityNames,
+          axisLabel: {
+            interval: 0,
+            rotate: 30,
+            textStyle: {
+              fontSize: 12
+            }
+          }
         },
         yAxis: {
-          type: "value"
+          type: 'value',
+          name: '报名人数'
         },
         series: [{
-          data: countPoems,
-          type: "bar"
+          data: registrationCounts,
+          type: 'bar',
+          barWidth: '40%',
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#83bff6' },
+              { offset: 0.5, color: '#188df0' },
+              { offset: 1, color: '#188df0' }
+            ])
+          }
         }]
       };
-      this.poemCourtChart.setOption(option);
+      
+      this.hotActivitiesChart.setOption(option);
     },
     // 初始化 ECharts 动画文本
     initEchartsText() {
