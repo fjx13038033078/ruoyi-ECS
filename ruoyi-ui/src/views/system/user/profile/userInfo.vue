@@ -2,12 +2,18 @@
   <el-form ref="form" :model="form" :rules="rules" label-width="80px">
     <el-form-item label="用户昵称" prop="nickName">
       <el-input v-model="form.nickName" maxlength="30" />
-    </el-form-item> 
+    </el-form-item>
     <el-form-item label="手机号码" prop="phonenumber">
       <el-input v-model="form.phonenumber" maxlength="11" />
     </el-form-item>
     <el-form-item label="邮箱" prop="email">
       <el-input v-model="form.email" maxlength="50" />
+    </el-form-item>
+    <el-form-item label="年龄" prop="age">
+      <el-input v-model="form.age" type="number" maxlength="50" />
+    </el-form-item>
+    <el-form-item label="居住地址" prop="address">
+      <el-input v-model="form.address" maxlength="50" />
     </el-form-item>
     <el-form-item label="性别">
       <el-radio-group v-model="form.sex">
@@ -62,7 +68,8 @@ export default {
     user: {
       handler(user) {
         if (user) {
-          this.form = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, sex: user.sex };
+          this.form = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, sex: user.sex,
+            age: user.age, address: user.address};
         }
       },
       immediate: true
@@ -76,6 +83,8 @@ export default {
             this.$modal.msgSuccess("修改成功");
             this.user.phonenumber = this.form.phonenumber;
             this.user.email = this.form.email;
+            this.user.age = this.form.age;
+            this.user.address = this.form.address;
           });
         }
       });

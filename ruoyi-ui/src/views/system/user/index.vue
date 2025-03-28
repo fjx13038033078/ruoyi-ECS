@@ -30,10 +30,10 @@
       <!--用户数据-->
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item label="用户名" prop="userName">
             <el-input
               v-model="queryParams.userName"
-              placeholder="请输入用户名称"
+              placeholder="请输入用户名"
               clearable
               style="width: 240px"
               @keyup.enter.native="handleQuery"
@@ -123,24 +123,24 @@
 <!--              v-hasPermi="['system:user:import']"-->
 <!--            >导入</el-button>-->
 <!--          </el-col>-->
-<!--          <el-col :span="1.5">-->
-<!--            <el-button-->
-<!--              type="warning"-->
-<!--              plain-->
-<!--              icon="el-icon-download"-->
-<!--              size="mini"-->
-<!--              @click="handleExport"-->
-<!--              v-hasPermi="['system:user:export']"-->
-<!--            >导出</el-button>-->
-<!--          </el-col>-->
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="mini"
+              @click="handleExport"
+              v-hasPermi="['system:user:export']"
+            >导出</el-button>
+          </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </el-row>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户名" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户姓名" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
 <!--          <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />-->
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
@@ -208,8 +208,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户昵称" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" maxlength="30" />
+            <el-form-item label="用户姓名" prop="nickName">
+              <el-input v-model="form.nickName" placeholder="请输入用户姓名" maxlength="30" />
             </el-form-item>
           </el-col>
 <!--          <el-col :span="12">-->
@@ -232,8 +232,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" maxlength="30" />
+            <el-form-item v-if="form.userId == undefined" label="用户名" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入用户名" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -292,6 +292,18 @@
                   :disabled="item.status == 1"
                 ></el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="年龄">
+              <el-input v-model="form.age" type="number" placeholder="请输入年龄"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="居住地址">
+              <el-input v-model="form.address" placeholder="请输入居住地址"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -527,6 +539,8 @@ export default {
         phonenumber: undefined,
         email: undefined,
         sex: undefined,
+        age:undefined,
+        address:undefined,
         status: "0",
         remark: undefined,
         balance:undefined,

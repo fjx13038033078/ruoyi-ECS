@@ -23,6 +23,14 @@
                 <svg-icon icon-class="email" />用户邮箱
                 <div class="pull-right">{{ user.email }}</div>
               </li>
+              <li class="list-group-item">
+                <svg-icon icon-class="peoples" />年龄
+                <div class="pull-right">{{ user.age }}</div>
+              </li>
+              <li class="list-group-item">
+                <svg-icon icon-class="peoples" />家庭住址
+                <div class="pull-right">{{ user.address }}</div>
+              </li>
 <!--              <li class="list-group-item">-->
 <!--                <svg-icon icon-class="tree" />所属部门-->
 <!--                <div class="pull-right" v-if="user.dept">{{ user.dept.deptName }} / {{ postGroup }}</div>-->

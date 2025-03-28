@@ -37,13 +37,13 @@ public class SysUser extends BaseEntity {
     /**
      * 用户账号
      */
-    @Excel(name = "登录名称")
+    @Excel(name = "用户名")
     private String userName;
 
     /**
      * 用户昵称
      */
-    @Excel(name = "用户名称")
+    @Excel(name = "用户姓名")
     private String nickName;
 
     /**
@@ -77,7 +77,7 @@ public class SysUser extends BaseEntity {
     /**
      * 帐号状态（0正常 1停用）
      */
-    @Excel(name = "帐号状态", readConverterExp = "0=正常,1=停用")
+//    @Excel(name = "帐号状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
     /**
@@ -88,22 +88,22 @@ public class SysUser extends BaseEntity {
     /**
      * 最后登录IP
      */
-    @Excel(name = "最后登录IP", type = Type.EXPORT)
+//    @Excel(name = "最后登录IP", type = Type.EXPORT)
     private String loginIp;
 
     /**
      * 最后登录时间
      */
-    @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
+//    @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     private Date loginDate;
 
     /**
      * 部门对象
      */
-    @Excels({
-            @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
-            @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
-    })
+//    @Excels({
+//            @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
+//            @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
+//    })
     private SysDept dept;
 
     /**
@@ -130,6 +130,28 @@ public class SysUser extends BaseEntity {
      * 余额
      */
     private BigDecimal balance;
+
+    @Excel(name = "年龄")
+    private Integer age;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    @Excel(name = "居住地址")
+    private String address;
 
     public SysUser() {
 
@@ -330,6 +352,8 @@ public class SysUser extends BaseEntity {
                 .append("remark", getRemark())
                 .append("dept", getDept())
                 .append("balance", getBalance())
+                .append("age", getAge())
+                .append("address", getAddress())
                 .toString();
     }
 }
