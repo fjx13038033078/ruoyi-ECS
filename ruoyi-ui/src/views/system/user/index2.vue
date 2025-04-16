@@ -2,33 +2,33 @@
   <div class="app-container">
     <el-row :gutter="20">
       <!--部门数据-->
-      <el-col :span="4" :xs="24">
-        <div class="head-container">
-          <el-input
-            v-model="deptName"
-            placeholder="请输入部门名称"
-            clearable
-            size="small"
-            prefix-icon="el-icon-search"
-            style="margin-bottom: 20px"
-          />
-        </div>
-        <div class="head-container">
-          <el-tree
-            :data="deptOptions"
-            :props="defaultProps"
-            :expand-on-click-node="false"
-            :filter-node-method="filterNode"
-            ref="tree"
-            node-key="id"
-            default-expand-all
-            highlight-current
-            @node-click="handleNodeClick"
-          />
-        </div>
-      </el-col>
+<!--      <el-col :span="4" :xs="24">-->
+<!--        <div class="head-container">-->
+<!--          <el-input-->
+<!--            v-model="deptName"-->
+<!--            placeholder="请输入部门名称"-->
+<!--            clearable-->
+<!--            size="small"-->
+<!--            prefix-icon="el-icon-search"-->
+<!--            style="margin-bottom: 20px"-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="head-container">-->
+<!--          <el-tree-->
+<!--            :data="deptOptions"-->
+<!--            :props="defaultProps"-->
+<!--            :expand-on-click-node="false"-->
+<!--            :filter-node-method="filterNode"-->
+<!--            ref="tree"-->
+<!--            node-key="id"-->
+<!--            default-expand-all-->
+<!--            highlight-current-->
+<!--            @node-click="handleNodeClick"-->
+<!--          />-->
+<!--        </div>-->
+<!--      </el-col>-->
       <!--用户数据-->
-      <el-col :span="20" :xs="24">
+      <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="用户名称" prop="userName">
             <el-input
@@ -139,9 +139,9 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户名" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户姓名" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
+<!--          <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />-->
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
@@ -153,7 +153,7 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="余额" align="center" key="balance" prop="balance" v-if="columns[6].visible" />
+<!--          <el-table-column label="余额" align="center" key="balance" prop="balance" v-if="columns[6].visible" />-->
           <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -349,7 +349,17 @@
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect ,listTrainer} from "@/api/system/user";
+import {
+  listUser,
+  getUser,
+  delUser,
+  addUser,
+  updateUser,
+  resetUserPwd,
+  changeUserStatus,
+  deptTreeSelect,
+  listVip
+} from "@/api/system/user";
 import { getToken } from "@/utils/auth";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -477,7 +487,7 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true;
-      listTrainer(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+      listVip(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.userList = response.rows;
           this.total = response.total;
           this.loading = false;

@@ -1,8 +1,10 @@
 package com.ruoyi.care.service.impl;
 
 import com.ruoyi.care.domain.HealthRecord;
+import com.ruoyi.care.domain.HomeRelation;
 import com.ruoyi.care.mapper.HealthRecordMapper;
 import com.ruoyi.care.service.HealthRecordService;
+import com.ruoyi.care.service.HomeRelationService;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.service.ISysRoleService;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ruoyi.common.utils.PageUtils.startPage;
@@ -29,29 +32,42 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     private final ISysRoleService iSysRoleService;
 
+    private final HomeRelationService homeRelationService;
+
     /**
      * 获取所有健康记录
+     *
      * @return 健康记录列表
      */
     @Override
     public List<HealthRecord> getAllHealthRecords() {
         Long userId = SecurityUtils.getUserId();
         String role = iSysRoleService.selectStringRoleByUserId(userId);
-        if (role.equals("admin")){
-            startPage();
-            List<HealthRecord> allHealthRecords = healthRecordMapper.getAllHealthRecords();
-            fillHealthRecord(allHealthRecords);
-            return allHealthRecords;
+
+        startPage(); // 建议统一调用分页，避免每个分支都写一遍
+
+        List<HealthRecord> allHealthRecords = new ArrayList<>();
+
+        if ("admin".equals(role)) {
+            allHealthRecords = healthRecordMapper.getAllHealthRecords();
+        } else if ("home".equals(role)) {
+            List<HomeRelation> homeRelations = homeRelationService.getHomeRelationByDependentsId(userId);
+            for (HomeRelation relation : homeRelations) {
+                Long elderlyId = relation.getUserId();
+                List<HealthRecord> records = healthRecordMapper.getHealthRecordByElderlyId(elderlyId);
+                allHealthRecords.addAll(records);
+            }
         } else {
-            startPage();
-            List<HealthRecord> healthRecordsByElderlyId = healthRecordMapper.getHealthRecordByElderlyId(userId);
-            fillHealthRecord(healthRecordsByElderlyId);
-            return healthRecordsByElderlyId;
+            allHealthRecords = healthRecordMapper.getHealthRecordByElderlyId(userId);
         }
+
+        fillHealthRecord(allHealthRecords);
+        return allHealthRecords;
     }
 
     /**
      * 根据ID获取健康记录详情
+     *
      * @param recordId 健康记录ID
      * @return 健康记录详情
      */
@@ -62,6 +78,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     /**
      * 添加健康记录
+     *
      * @param healthRecord 健康记录信息
      * @return 是否添加成功
      */
@@ -82,6 +99,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     /**
      * 更新健康记录
+     *
      * @param healthRecord 健康记录信息
      * @return 是否更新成功
      */
@@ -94,6 +112,7 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     /**
      * 删除健康记录
+     *
      * @param recordId 健康记录ID
      * @return 是否删除成功
      */
@@ -121,12 +140,13 @@ public class HealthRecordServiceImpl implements HealthRecordService {
 
     /**
      * 填充健康记录信息
+     *
      * @param healthRecords 健康记录列表
      */
-    private void fillHealthRecord(List<HealthRecord> healthRecords){
+    private void fillHealthRecord(List<HealthRecord> healthRecords) {
         for (HealthRecord healthRecord : healthRecords) {
             Long elderlyId = healthRecord.getElderlyId();
-            if (elderlyId == null){
+            if (elderlyId == null) {
                 continue;
             }
             SysUser sysUser = iSysUserService.selectUserById(elderlyId);

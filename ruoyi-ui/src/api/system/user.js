@@ -28,6 +28,15 @@ export function listVip(query) {
   })
 }
 
+// 查询用户列表
+export function listTrainer(query) {
+  return request({
+    url: '/system/user/trainerList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询用户详细
 export function getUser(userId) {
   return request({

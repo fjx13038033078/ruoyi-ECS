@@ -164,17 +164,17 @@ export default {
       // 准备数据
       const activityNames = [];
       const registrationCounts = [];
-      
+
       // 解析返回的数据 - 修改为适应新的数据格式
       this.hotActivitiesData.forEach(item => {
         // 数据格式是 {"活动名称": 数量}
         const activityName = Object.keys(item)[0]; // 获取第一个键作为活动名称
         const count = item[activityName];          // 获取对应的值作为报名人数
-        
+
         activityNames.push(activityName);
         registrationCounts.push(count);
       });
-      
+
       const option = {
         tooltip: {
           trigger: 'axis',
@@ -210,7 +210,7 @@ export default {
           }
         }]
       };
-      
+
       this.hotActivitiesChart.setOption(option);
     },
     // 初始化 ECharts 动画文本
